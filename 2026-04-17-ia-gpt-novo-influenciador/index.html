@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=420, initial-scale=1.0">
+<title>Chatbots de IA: Os Novos Influenciadores | Unidcom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d0d0d;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 80px;
+    min-height: 100vh;
+  }
+  .slide {
+    display: none;
+    width: 420px;
+    height: 525px;
+    position: relative;
+    overflow: hidden;
+    flex-direction: column;
+  }
+  .slide.active { display: flex; }
+  .progress-track {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+    z-index: 9;
+  }
+  .progress-bar {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: #FF7C1A;
+    z-index: 10;
+  }
+  .header-meta {
+    position: absolute;
+    top: 14px; left: 20px; right: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #999999;
+    z-index: 5;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.12);
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.28); }
+  .nav-prev { left: -48px; }
+  .nav-next { right: -48px; }
+</style>
+</head>
+<body>
+
+<!-- BOTÃO EXPORTAR -->
+<div style="text-align:center;margin-bottom:16px;font-family:'Montserrat',sans-serif;">
+  <button id="btnExport" onclick="exportAllSlides()"
+    style="background:#FF7C1A;color:#fff;border:none;padding:10px 24px;
+           border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;
+           letter-spacing:1px;font-family:'Montserrat',sans-serif;">
+    ⬇ EXPORTAR PNG
+  </button>
+  <span id="exportProgress"
+    style="display:none;margin-left:12px;font-size:13px;color:#888;
+           font-family:'Montserrat',sans-serif;"></span>
+</div>
+
+<div style="position:relative;">
+  <div id="carousel" style="position:relative;width:420px;">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SLIDE 1 — CAPA (foto + overlay) -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="slide active" id="slide-1">
+      <div style="position:absolute;inset:0;
+                  background-image:url('https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=840&q=80');
+                  background-size:cover;background-position:center;z-index:1;"></div>
+      <div style="position:absolute;inset:0;
+                  background:linear-gradient(to bottom,
+                    rgba(0,0,0,0.15) 0%,
+                    rgba(0,0,0,0.65) 50%,
+                    rgba(0,0,0,0.96) 100%);z-index:2;"></div>
+      <div style="position:relative;z-index:5;display:flex;flex-direction:column;
+                  justify-content:flex-end;height:100%;padding:0 24px 28px;">
+        <p style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;
+                  font-style:italic;color:#FF7C1A;margin-bottom:8px;">
+          A IA já está respondendo pelo seu cliente.
+        </p>
+        <h1 style="font-family:'Montserrat',sans-serif;font-size:33px;font-weight:900;
+                   color:#FFFFFF;text-transform:uppercase;line-height:1.08;margin-bottom:10px;">
+          SEU MARKETING<br>CONVENCE O HUMANO.<br>
+          <span style="color:#FF7C1A;">MAS QUEM<br>CONVENCE A IA?</span>
+        </h1>
+        <p style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;
+                  color:rgba(255,255,255,0.82);margin-bottom:18px;line-height:1.4;">
+          A nova fronteira que as marcas líderes já cruzaram.
+        </p>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <img src="https://unidcom.com.br/wp-content/uploads/2024/02/logo.png"
+               style="height:20px;width:auto;" alt="unidcom" crossorigin="anonymous">
+          <div style="background:#FF7C1A;color:#fff;font-family:'Montserrat',sans-serif;
+                      font-weight:700;font-size:10px;text-transform:uppercase;
+                      letter-spacing:0.5px;padding:8px 14px;border-radius:20px;
+                      display:flex;align-items:center;gap:6px;white-space:nowrap;">
+            ENTENDA MELHOR <span>&#8594;</span>
+          </div>
+        </div>
+      </div>
+      <div class="progress-track"></div>
+      <div class="progress-bar" style="width:14.28%;"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SLIDE 2 — escuro, frase polêmica -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="slide" id="slide-2" style="background:#1A1A1A;padding:44px 24px 28px;">
+      <div class="header-meta">
+        <span>CHATBOTS</span><span>UNIDCOM</span><span>MARKETING</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <p style="font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;
+                  font-style:italic;color:#FF7C1A;margin-bottom:10px;">
+          O que ninguém te disse:
+        </p>
+        <h2 style="font-family:'Montserrat',sans-serif;font-size:38px;font-weight:900;
+                   color:#FFFFFF;text-transform:uppercase;line-height:1.08;margin-bottom:16px;">
+          800 MILHÕES<br>DE PESSOAS<br>PERGUNTAM<br>AO CHATGPT<br>
+          <span style="color:#FF7C1A;">ANTES DE<br>COMPRAR.</span>
+        </h2>
+        <p style="font-family:'Montserrat',sans-serif;font-size:14px;font-weight:600;
+                  color:rgba(255,255,255,0.78);line-height:1.5;">
+          Sua marca aparece nessa resposta?<br>Ou só a do concorrente?
+        </p>
+      </div>
+      <div class="progress-track"></div>
+      <div class="progress-bar" style="width:28.57%;"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SLIDE 3 — laranja, crença comum -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="slide" id="slide-3" style="background:#FF7C1A;padding:44px 24px 28px;">
+      <div class="header-meta" style="color:rgba(0,0,0,0.32);">
+        <span>CHATBOTS</span><span>UNIDCOM</span><span>MARKETING</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;">
+        <div style="width:28px;height:28px;background:#1A1A1A;border-radius:50%;
+                    display:flex;align-items:center;justify-content:center;">
+          <span style="color:#fff;font-size:14px;font-weight:700;">&#8594;</span>
+        </div>
+        <h2 style="font-family:'Montserrat',sans-serif;font-size:42px;font-weight:900;
+                   color:#1A1A1A;text-transform:uppercase;line-height:1.08;">
+          TODO MUNDO<br>INVESTE<br>EM SEO.
+        </h2>
+        <p style="font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;
+                  color:#1A1A1A;line-height:1.5;">
+          Você aprende a aparecer no Google. Contrata agência. Otimiza o site.
+        </p>
+        <p style="font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;
+                  color:#1A1A1A;font-style:italic;line-height:1.4;">
+          "Mas ninguém te ensinou a aparecer quando a IA fala com o seu cliente."
+        </p>
+      </div>
+      <img src="https://unidcom.com.br/wp-content/uploads/2024/02/logo.png"
+           style="height:18px;width:auto;filter:brightness(0);margin-bottom:4px;"
+           alt="unidcom" crossorigin="anonymous">
+      <div class="progress-track" style="background:rgba(0,0,0,0.12);"></div>
+      <div class="progress-bar" style="width:42.85%;background:rgba(0,0,0,0.25);"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SLIDE 4 — escuro, revelação do caso real -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="slide" id="slide-4" style="background:#1A1A1A;padding:44px 24px 28px;">
+      <div class="header-meta">
+        <span>CHATBOTS</span><span>UNIDCOM</span><span>MARKETING</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <p style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;
+                  font-style:italic;color:#FF7C1A;margin-bottom:10px;">
+          Enquanto isso, no mundo real:
+        </p>
+        <h2 style="font-family:'Montserrat',sans-serif;font-size:30px;font-weight:900;
+                   color:#FFFFFF;text-transform:uppercase;line-height:1.15;margin-bottom:14px;">
+          UMA MARCA DE LUXO<br>PASSOU DE
+          <span style="color:#FF7C1A;">5 PARA 100</span><br>
+          PEÇAS DE CONTEÚDO<br>POR MÊS.
+        </h2>
+        <p style="font-family:'Montserrat',sans-serif;font-size:14px;font-weight:600;
+                  color:rgba(255,255,255,0.78);line-height:1.5;">
+          Não para ranquear no Google.<br>
+          Para ser <strong style="color:#FF7C1A;">citada pelo ChatGPT</strong> quando o<br>
+          cliente perguntar qual marca comprar.
+        </p>
+      </div>
+      <div class="progress-track"></div>
+      <div class="progress-bar" style="width:57.14%;"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SLIDE 5 — foto + dado concreto -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="slide" id="slide-5">
+      <div style="position:absolute;inset:0;
+                  background-image:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=840&q=80');
+                  background-size:cover;background-position:center;z-index:1;"></div>
+      <div style="position:absolute;inset:0;
+                  background:linear-gradient(to bottom,
+                    rgba(0,0,0,0.80) 0%,
+                    rgba(0,0,0,0.38) 45%,
+                    rgba(0,0,0,0.80) 100%);z-index:2;"></div>
+      <div class="header-meta" style="color:rgba(255,255,255,0.62);">
+        <span>CHATBOTS</span><span>UNIDCOM</span><span>MARKETING</span>
+      </div>
+      <div style="position:relative;z-index:5;display:flex;flex-direction:column;
+                  justify-content:flex-end;height:100%;padding:0 24px 28px;">
+        <div style="border-left:3px solid #FF7C1A;padding-left:14px;">
+          <p style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;
+                    font-style:italic;color:#FF7C1A;margin-bottom:8px;">
+            O dado que muda tudo:
+          </p>
+          <h2 style="font-family:'Montserrat',sans-serif;font-size:26px;font-weight:900;
+                     color:#FFFFFF;text-transform:uppercase;line-height:1.15;margin-bottom:10px;">
+            O REDDIT APARECE EM<br>
+            <span style="color:#FF7C1A;">+50% DAS RESPOSTAS</span><br>
+            DO CHATGPT.
+          </h2>
+          <p style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;
+                    color:rgba(255,255,255,0.88);line-height:1.5;">
+            A Athenahealth publicou
+            <strong style="color:#FF7C1A;">250 mil palavras</strong>
+            para ser citada pela IA.<br>Você ainda espera o cliente te achar?
+          </p>
+        </div>
+      </div>
+      <div class="progress-track"></div>
+      <div class="progress-bar" style="width:71.42%;"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SLIDE 6 — escuro, framework GEO -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="slide" id="slide-6" style="background:#1A1A1A;padding:44px 24px 28px;">
+      <div class="header-meta">
+        <span>CHATBOTS</span><span>UNIDCOM</span><span>MARKETING</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:10px;">
+        <p style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;
+                  font-style:italic;color:#FF7C1A;">
+          A estratégia se chama GEO:
+        </p>
+        <h2 style="font-family:'Montserrat',sans-serif;font-size:36px;font-weight:900;
+                   color:#FFFFFF;text-transform:uppercase;line-height:1.08;">
+          GENERATIVE<br>ENGINE<br>OPTIMIZATION.
+        </h2>
+        <p style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;
+                  color:rgba(255,255,255,0.68);line-height:1.5;margin-bottom:2px;">
+          O novo SEO — mas para aparecer nas <em>respostas</em> da IA,<br>
+          não nos links do Google.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="display:flex;align-items:flex-start;gap:9px;">
+            <span style="font-size:14px;flex-shrink:0;line-height:1.4;">✅</span>
+            <p style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;
+                      color:#FFFFFF;line-height:1.4;">
+              Conteúdo em fontes que a IA confia (LinkedIn, Reddit, fóruns de nicho)
+            </p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:9px;">
+            <span style="font-size:14px;flex-shrink:0;line-height:1.4;">✅</span>
+            <p style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;
+                      color:#FFFFFF;line-height:1.4;">
+              Responda às perguntas exatas que seu cliente faz ao ChatGPT
+            </p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:9px;">
+            <span style="font-size:14px;flex-shrink:0;line-height:1.4;">✅</span>
+            <p style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;
+                      color:#FFFFFF;line-height:1.4;">
+              Volume + autoridade: a IA cita quem publica mais sobre o tema
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="progress-track"></div>
+      <div class="progress-bar" style="width:85.71%;"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SLIDE 7 — CTA laranja -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="slide" id="slide-7"
+         style="background:#FF7C1A;flex-direction:column;align-items:center;
+                justify-content:center;padding:32px 24px;">
+      <img src="https://unidcom.com.br/wp-content/uploads/2024/02/logo.png"
+           style="height:22px;width:auto;filter:brightness(0);margin-bottom:24px;"
+           alt="unidcom" crossorigin="anonymous">
+      <h2 style="font-family:'Montserrat',sans-serif;font-size:30px;font-weight:900;
+                 color:#1A1A1A;text-transform:uppercase;text-align:center;
+                 line-height:1.12;margin-bottom:12px;">
+        SEU<br>CONCORRENTE<br>JÁ ESTÁ NA<br>RESPOSTA DA IA.<br>E VOCÊ?
+      </h2>
+      <p style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;
+                color:#1A1A1A;text-align:center;margin-bottom:24px;line-height:1.5;">
+        Transformamos sua marca em autoridade<br>que a IA reconhece — e recomenda.
+      </p>
+      <div style="display:flex;gap:20px;color:#1A1A1A;margin-bottom:18px;">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+          <polyline points="17 1 21 5 17 9"/>
+          <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/>
+          <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <p style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;
+                color:#1A1A1A;text-transform:uppercase;letter-spacing:2px;">
+        SALVE · COMPARTILHE · COMENTE
+      </p>
+      <div class="progress-track" style="background:rgba(0,0,0,0.12);"></div>
+      <div class="progress-bar" style="width:100%;background:rgba(0,0,0,0.30);"></div>
+    </div>
+
+  </div><!-- /carousel -->
+
+  <button class="nav-btn nav-prev" onclick="changeSlide(-1)">&#8592;</button>
+  <button class="nav-btn nav-next" onclick="changeSlide(1)">&#8594;</button>
+</div>
+
+<div id="slideCounter"
+     style="margin-top:12px;color:#555;font-size:12px;font-family:'Montserrat',sans-serif;
+            font-weight:600;letter-spacing:1px;text-align:center;">
+  1 / 7
+</div>
+
+<script>
+const N = 7;
+let current = 0;
+
+function showSlide(idx) {
+  document.querySelectorAll('.slide').forEach((s, i) => {
+    s.classList.toggle('active', i === idx);
+  });
+  current = idx;
+  document.getElementById('slideCounter').textContent = (idx + 1) + ' / ' + N;
+}
+
+function changeSlide(dir) {
+  showSlide((current + dir + N) % N);
+}
+
+async function exportAllSlides() {
+  const btn = document.getElementById('btnExport');
+  const progress = document.getElementById('exportProgress');
+  btn.disabled = true;
+  progress.style.display = 'inline-block';
+  const SCALE = 1080 / 420;
+
+  for (let i = 0; i < N; i++) {
+    showSlide(i);
+    progress.textContent = 'Exportando ' + (i + 1) + ' / ' + N + '...';
+    await new Promise(r => setTimeout(r, 600));
+
+    const slide = document.getElementById('slide-' + (i + 1));
+    const canvas = await html2canvas(slide, {
+      scale: SCALE,
+      useCORS: true,
+      allowTaint: false,
+      backgroundColor: null,
+      width: 420,
+      height: 525,
+      logging: false
+    });
+
+    const link = document.createElement('a');
+    link.download = 'slide_' + String(i + 1).padStart(2, '0') + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    await new Promise(r => setTimeout(r, 400));
+  }
+
+  progress.textContent = '✅ Exportação concluída!';
+  setTimeout(() => {
+    progress.style.display = 'none';
+    btn.disabled = false;
+  }, 3000);
+  showSlide(0);
+}
+</script>
+</body>
+</html>
