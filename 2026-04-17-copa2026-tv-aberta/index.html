@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Copa 2026: TV Aberta vs Streaming | Unidcom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,900;1,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+      font-family: "Montserrat", sans-serif;
+      min-height: 100vh;
+    }
+    .slide {
+      display: none;
+      width: 420px;
+      height: 525px;
+      overflow: hidden;
+      position: relative;
+      font-family: "Montserrat", sans-serif;
+      flex-direction: column;
+    }
+    .slide.active { display: flex; }
+    .progress-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.15);
+      z-index: 20;
+    }
+    .progress-fill { height: 100%; background: #FF7C1A; }
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px 0;
+      position: relative;
+      z-index: 5;
+    }
+    .slide-header span {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #999;
+    }
+    .nav-btn {
+      background: #FF7C1A; color: #fff; border: none;
+      width: 36px; height: 36px; border-radius: 50%;
+      font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-btn:disabled { background: #333; cursor: default; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; cursor: pointer; transition: background 0.2s; }
+    .dot.active { background: #FF7C1A; }
+  </style>
+</head>
+<body>
+
+  <!-- SLIDE 1 - CAPA -->
+  <div class="slide active" id="slide-1" style="background:#1a1a1a;">
+    <div class="progress-bar"><div class="progress-fill" style="width:14.28%"></div></div>
+    <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=840&q=80');background-size:cover;background-position:center top;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.08) 0%,rgba(0,0,0,0.55) 45%,rgba(0,0,0,0.97) 100%);"></div>
+    <div style="position:relative;z-index:5;display:flex;flex-direction:column;height:100%;padding:18px 20px 22px;justify-content:space-between;">
+      <div style="display:flex;justify-content:flex-end;">
+        <img src="https://unidcom.com.br/wp-content/uploads/2024/02/logo.png" style="height:20px;width:auto;" alt="unidcom">
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#FF7C1A;margin-bottom:10px;">&#9679; Contraintelig&ecirc;ncia de Mercado</div>
+        <div style="font-size:29px;font-weight:900;text-transform:uppercase;color:#fff;line-height:1.05;letter-spacing:-0.5px;margin-bottom:10px;">Voc&ecirc; vai <span style="color:#FF7C1A;">desperdi&ccedil;ar</span> o budget da Copa</div>
+        <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);line-height:1.4;margin-bottom:16px;">A maioria das marcas vai alocar verba no lugar errado. Os dados provam.</div>
+        <div style="display:inline-block;background:#FF7C1A;color:#fff;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;border-radius:4px;">Deslize para entender &#8594;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 - CRENÇA -->
+  <div class="slide" id="slide-2" style="background:#1a1a1a;">
+    <div class="progress-bar"><div class="progress-fill" style="width:28.57%"></div></div>
+    <div class="slide-header">
+      <span>Copa 2026</span><span>Unidcom</span><span>M&iacute;dia &amp; Estrat&eacute;gia</span>
+    </div>
+    <div style="display:flex;flex-direction:column;height:100%;padding:0 20px 20px;justify-content:center;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#FF7C1A;margin-bottom:16px;">&#9888;&#65039; A cren&ccedil;a que domina o mercado</div>
+      <div style="font-size:19px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.35);line-height:1.4;margin-bottom:22px;border-left:3px solid #FF7C1A;padding-left:14px;">&ldquo;O streaming dominou. A TV aberta morreu. Coloca tudo no digital.&rdquo;</div>
+      <div style="font-size:13px;font-weight:600;color:#fff;line-height:1.6;">Todo CMO ouviu isso no &uacute;ltimo planejamento de Copa.<br><br>E a maioria <span style="color:#FF7C1A;font-weight:700;">acreditou.</span><br><br>Os dados dizem o contr&aacute;rio.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 - DADOS LARANJA -->
+  <div class="slide" id="slide-3" style="background:#FF7C1A;">
+    <div class="progress-bar"><div class="progress-fill" style="width:42.85%;background:#1a1a1a;"></div></div>
+    <div class="slide-header" style="padding-top:14px;">
+      <span style="color:rgba(26,26,26,0.5);">Copa 2026</span>
+      <span style="color:rgba(26,26,26,0.5);">Unidcom</span>
+      <span style="color:rgba(26,26,26,0.5);">M&iacute;dia &amp; Estrat&eacute;gia</span>
+    </div>
+    <div style="display:flex;flex-direction:column;height:100%;padding:4px 20px 20px;justify-content:center;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(26,26,26,0.5);margin-bottom:6px;">Pesquisa Adlook &middot; Brasil &middot; 2026</div>
+      <div style="font-size:76px;font-weight:900;color:#1a1a1a;line-height:1;letter-spacing:-2px;margin-bottom:2px;">47,4%</div>
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;line-height:1.3;margin-bottom:16px;">dos brasileiros v&atilde;o assistir a Copa<br>pela <strong>TV aberta</strong></div>
+      <div style="width:40px;height:3px;background:rgba(26,26,26,0.22);margin-bottom:16px;"></div>
+      <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:7px;">&#128250; Streaming: apenas 22%</div>
+      <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:7px;">&#128241; Mobile / PC: ~19%</div>
+      <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:14px;">&#127967; Locais p&uacute;blicos: 11,1%</div>
+      <div style="font-size:9px;font-weight:400;color:rgba(26,26,26,0.42);letter-spacing:1px;text-transform:uppercase;">Fonte: Adlook &mdash; Prefer&ecirc;ncia de M&iacute;dia Copa 2026</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 - FOTO + ANÁLISE -->
+  <div class="slide" id="slide-4" style="background:#1a1a1a;">
+    <div class="progress-bar"><div class="progress-fill" style="width:57.14%"></div></div>
+    <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1593784991095-a205069470b6?w=840&q=80');background-size:cover;background-position:center;"></div>
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.60);"></div>
+    <div style="position:absolute;top:3px;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 18px 0;">
+      <span style="font-size:9px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:#999;">Copa 2026</span>
+      <span style="font-size:9px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:#999;">Unidcom</span>
+      <span style="font-size:9px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:#999;">M&iacute;dia &amp; Estrat&eacute;gia</span>
+    </div>
+    <div style="position:relative;z-index:5;display:flex;flex-direction:column;height:100%;padding:52px 20px 24px;justify-content:flex-end;">
+      <div style="font-size:14px;font-weight:700;font-style:italic;color:#FF7C1A;margin-bottom:14px;line-height:1.3;">Enquanto voc&ecirc; dobra o budget no streaming...</div>
+      <div style="display:flex;flex-direction:column;gap:11px;">
+        <div style="display:flex;align-items:flex-start;gap:9px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#FF7C1A;font-size:11px;color:#fff;flex-shrink:0;margin-top:1px;">&#8594;</span>
+          <span style="font-size:13px;font-weight:600;color:#fff;line-height:1.4;">2x mais brasileiros assistem pela TV aberta</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:9px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#FF7C1A;font-size:11px;color:#fff;flex-shrink:0;margin-top:1px;">&#8594;</span>
+          <span style="font-size:13px;font-weight:600;color:#fff;line-height:1.4;">11,1% est&atilde;o em bares e locais p&uacute;blicos &mdash; ativa&ccedil;&atilde;o zero</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:9px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#FF7C1A;font-size:11px;color:#fff;flex-shrink:0;margin-top:1px;">&#8594;</span>
+          <span style="font-size:13px;font-weight:600;color:#fff;line-height:1.4;">25% n&atilde;o v&atilde;o assistir &mdash; 1/4 do mercado fora do seu radar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 - DARK ANALYSIS -->
+  <div class="slide" id="slide-5" style="background:#1a1a1a;">
+    <div class="progress-bar"><div class="progress-fill" style="width:71.42%"></div></div>
+    <div class="slide-header">
+      <span>Copa 2026</span><span>Unidcom</span><span>M&iacute;dia &amp; Estrat&eacute;gia</span>
+    </div>
+    <div style="display:flex;flex-direction:column;height:100%;padding:0 20px 22px;justify-content:center;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#FF7C1A;margin-bottom:14px;">&#127919; O custo real do erro</div>
+      <div style="font-size:23px;font-weight:900;text-transform:uppercase;color:#fff;line-height:1.1;margin-bottom:16px;letter-spacing:-0.3px;">Otimizando CTR no <span style="color:#FF7C1A;">YouTube</span>...<br>perdendo metade do <span style="color:#FF7C1A;">Brasil</span></div>
+      <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);line-height:1.6;">Plano focado em streaming alcança <strong style="color:#fff;">22% da audi&ecirc;ncia.</strong><br><br>Quem manteve TV aberta no mix atingiu <strong style="color:#fff;">mais que o dobro</strong> de pessoas &mdash; no mesmo per&iacute;odo.<br><br>Na Copa, <strong style="color:#FF7C1A;">alcance &eacute; vantagem competitiva.</strong></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 - ORANGE ACTION -->
+  <div class="slide" id="slide-6" style="background:#FF7C1A;">
+    <div class="progress-bar"><div class="progress-fill" style="width:85.71%;background:#1a1a1a;"></div></div>
+    <div class="slide-header" style="padding-top:14px;">
+      <span style="color:rgba(26,26,26,0.5);">Copa 2026</span>
+      <span style="color:rgba(26,26,26,0.5);">Unidcom</span>
+      <span style="color:rgba(26,26,26,0.5);">M&iacute;dia &amp; Estrat&eacute;gia</span>
+    </div>
+    <div style="display:flex;flex-direction:column;height:100%;padding:4px 20px 22px;justify-content:center;">
+      <div style="font-size:18px;font-weight:900;text-transform:uppercase;color:#1a1a1a;line-height:1.1;margin-bottom:20px;letter-spacing:-0.3px;">O que muda no seu plano de m&iacute;dia:</div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:18px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <span style="font-size:22px;font-weight:900;color:rgba(26,26,26,0.16);line-height:1;min-width:26px;">01</span>
+          <span style="font-size:13px;font-weight:700;color:#1a1a1a;line-height:1.4;">TV aberta n&atilde;o &eacute; passado &mdash; &eacute; onde est&aacute; a maior audi&ecirc;ncia da Copa no Brasil</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <span style="font-size:22px;font-weight:900;color:rgba(26,26,26,0.16);line-height:1;min-width:26px;">02</span>
+          <span style="font-size:13px;font-weight:700;color:#1a1a1a;line-height:1.4;">Plano multicanal &eacute; obrigat&oacute;rio: TV + digital + ativa&ccedil;&atilde;o em locais p&uacute;blicos</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <span style="font-size:22px;font-weight:900;color:rgba(26,26,26,0.16);line-height:1;min-width:26px;">03</span>
+          <span style="font-size:13px;font-weight:700;color:#1a1a1a;line-height:1.4;">Os 25% que n&atilde;o assistem futebol precisam de estrat&eacute;gia pr&oacute;pria &mdash; s&atilde;o 1/4 do seu mercado</span>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:700;font-style:italic;color:#1a1a1a;border-top:2px solid rgba(26,26,26,0.18);padding-top:14px;">A Copa n&atilde;o &eacute; s&oacute; para quem torce. &Eacute; para quem sabe usar.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 - CTA FINAL -->
+  <div class="slide" id="slide-7" style="background:#FF7C1A;">
+    <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#1a1a1a;"></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px 20px;text-align:center;">
+      <img src="https://unidcom.com.br/wp-content/uploads/2024/02/logo.png" style="height:28px;width:auto;filter:brightness(0);margin-bottom:24px;" alt="unidcom">
+      <div style="font-size:21px;font-weight:900;text-transform:uppercase;color:#1a1a1a;line-height:1.15;margin-bottom:12px;letter-spacing:-0.3px;">Seu plano de m&iacute;dia est&aacute; pronto para a Copa?</div>
+      <div style="font-size:13px;font-weight:600;color:rgba(26,26,26,0.65);line-height:1.5;margin-bottom:28px;">Salva esse post antes de fechar o pr&oacute;ximo briefing.<br>Compartilha com quem ainda acha que TV aberta morreu.</div>
+      <div style="display:flex;gap:20px;align-items:center;margin-bottom:18px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="#1a1a1a" stroke-width="2"/>
+          <circle cx="12" cy="12" r="4" stroke="#1a1a1a" stroke-width="2"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="#1a1a1a"/>
+        </svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 3H19C19.5523 3 20 3.44772 20 4V21L12 17L4 21V4C4 3.44772 4.44772 3 5 3Z" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#1a1a1a;letter-spacing:0.5px;">@unidcom</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div style="display:flex;justify-content:space-between;align-items:center;width:420px;margin-top:12px;padding:0 4px;">
+    <button class="nav-btn" id="btnPrev" onclick="changeSlide(-1)" disabled>&#8592;</button>
+    <div style="display:flex;gap:6px;" id="navDots">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+      <div class="dot" onclick="goToSlide(3)"></div>
+      <div class="dot" onclick="goToSlide(4)"></div>
+      <div class="dot" onclick="goToSlide(5)"></div>
+      <div class="dot" onclick="goToSlide(6)"></div>
+    </div>
+    <button class="nav-btn" id="btnNext" onclick="changeSlide(1)">&#8594;</button>
+  </div>
+
+  <div style="text-align:center;margin:16px 0;font-family:sans-serif;">
+    <button id="btnExport" onclick="exportAllSlides()"
+      style="background:#FF7C1A;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;">
+      &#8595; EXPORTAR PNG
+    </button>
+    <span id="exportProgress" style="display:none;margin-left:12px;font-size:13px;color:#666;"></span>
+  </div>
+
+  <script>
+    const N = 7;
+    let current = 0;
+    function showSlide(i) {
+      document.querySelectorAll(".slide").forEach((s, idx) => s.classList.toggle("active", idx === i));
+      document.querySelectorAll(".dot").forEach((d, idx) => d.classList.toggle("active", idx === i));
+      document.getElementById("btnPrev").disabled = i === 0;
+      document.getElementById("btnNext").disabled = i === N - 1;
+      current = i;
+    }
+    function changeSlide(dir) { const n = current + dir; if (n >= 0 && n < N) showSlide(n); }
+    function goToSlide(i) { showSlide(i); }
+    document.addEventListener("keydown", e => {
+      if (e.key === "ArrowLeft") changeSlide(-1);
+      if (e.key === "ArrowRight") changeSlide(1);
+    });
+    async function exportAllSlides() {
+      const btn = document.getElementById("btnExport");
+      const prog = document.getElementById("exportProgress");
+      btn.disabled = true; prog.style.display = "inline-block";
+      const SCALE = 1080 / 420;
+      for (let i = 0; i < N; i++) {
+        showSlide(i);
+        prog.textContent = "Exportando " + (i + 1) + " / " + N + "...";
+        await new Promise(r => setTimeout(r, 600));
+        const slide = document.getElementById("slide-" + (i + 1));
+        const canvas = await html2canvas(slide, {
+          scale: SCALE, useCORS: true, allowTaint: false,
+          backgroundColor: null, width: 420, height: 525, logging: false
+        });
+        const link = document.createElement("a");
+        link.download = "slide_" + String(i + 1).padStart(2, "0") + ".png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        await new Promise(r => setTimeout(r, 400));
+      }
+      prog.textContent = "Exportacao concluida!";
+      setTimeout(() => { prog.style.display = "none"; btn.disabled = false; }, 3000);
+      showSlide(0);
+    }
+  </script>
+</body>
+</html>
