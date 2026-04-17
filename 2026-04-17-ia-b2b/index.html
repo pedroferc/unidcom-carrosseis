@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidcom — IA B2B Carrossel</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #0d0d0d;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 30px 20px;
+  }
+
+  /* ── SLIDE CONTAINER ── */
+  .slide {
+    width: 420px;
+    height: 525px;
+    position: relative;
+    overflow: hidden;
+    display: none;
+    flex-shrink: 0;
+  }
+  .slide.active { display: flex; }
+
+  /* ── PROGRESS ── */
+  .progress-track {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+    z-index: 9;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #FF7C1A;
+    transition: width 0.3s ease;
+  }
+  .progress-fill.dark { background: rgba(0,0,0,0.35); }
+
+  /* ── HEADER META ── */
+  .hdr {
+    position: absolute;
+    top: 14px; left: 20px; right: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #999;
+    z-index: 5;
+  }
+  .hdr.on-orange { color: rgba(0,0,0,0.4); }
+
+  /* ── TYPOGRAPHY ── */
+  .tag-italic {
+    font-style: italic;
+    font-weight: 700;
+    font-size: 17px;
+    color: #FF7C1A;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .t-white {
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+  }
+  .t-dark {
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+  }
+  .body-w {
+    font-weight: 600;
+    font-size: 13px;
+    color: #fff;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+  .body-d {
+    font-weight: 600;
+    font-size: 13px;
+    color: #1A1A1A;
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+
+  /* ── ARROW CIRCLE ── */
+  .arr {
+    width: 28px; height: 28px;
+    background: #FF7C1A;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+  .arr.inv { background: #1A1A1A; }
+  .arr span { color: #fff; font-size: 14px; font-weight: 700; }
+
+  /* ── CTA BUTTON ── */
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FF7C1A;
+    color: #fff;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 9px 16px;
+    border-radius: 20px;
+    margin-top: 14px;
+    width: fit-content;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav button {
+    background: #FF7C1A;
+    color: #fff;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: opacity 0.2s;
+  }
+  .nav button:hover { opacity: 0.8; }
+  .nav span {
+    color: #555;
+    font-size: 12px;
+    min-width: 50px;
+    text-align: center;
+  }
+  .btn-export {
+    background: #222 !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-export:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .export-progress {
+    color: #FF7C1A;
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    min-width: 120px;
+    text-align: center;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 1 — CAPA (Foto full-bleed)
+══════════════════════════════════════════ -->
+<div class="slide active" id="slide-1">
+
+  <!-- BG foto -->
+  <div style="position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=840&q=80');
+    background-size:cover;background-position:center;"></div>
+
+  <!-- Overlay -->
+  <div style="position:absolute;inset:0;
+    background:linear-gradient(to bottom,
+      rgba(0,0,0,0.12) 0%,
+      rgba(0,0,0,0.60) 45%,
+      rgba(0,0,0,0.95) 100%);"></div>
+
+  <!-- Logo -->
+  <div style="position:absolute;top:18px;left:20px;z-index:5;">
+    <img src="https://unidcom.com.br/wp-content/uploads/2024/02/logo.png"
+         style="height:20px;width:auto;" alt="unidcom">
+  </div>
+
+  <!-- Conteúdo -->
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;
+              justify-content:flex-end;padding:0 24px 32px;z-index:5;">
+    <p class="tag-italic" style="font-size:15px;margin-bottom:8px;">
+      71% dos compradores B2B já usam IA para escolher fornecedores.
+    </p>
+    <h1 class="t-white" style="font-size:52px;">
+      SEU CLIENTE<br>PAROU DE<br>BUSCAR<br>NO GOOGLE.
+    </h1>
+    <p class="body-w" style="font-size:13px;margin-top:8px;">
+      Ele pergunta para IA. E você provavelmente não aparece na lista.
+    </p>
+    <div class="cta-btn">ENTENDA MELHOR &#8594;</div>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" style="width:14%"></div></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SLIDE 2 — Crença comum (fundo escuro)
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-2">
+  <div style="background:#1A1A1A;width:100%;height:100%;display:flex;
+              flex-direction:column;justify-content:center;padding:50px 24px 28px;">
+
+    <div class="hdr"><span>IA B2B</span><span>UNIDCOM</span><span>ESTRATÉGIA</span></div>
+
+    <p class="tag-italic">"O que todo mundo ainda acredita:"</p>
+    <h2 class="t-white" style="font-size:50px;">
+      QUEM<br>RANQUEIA<br>NO GOOGLE,<br>VENDE.
+    </h2>
+    <p class="body-w">
+      SEO, tráfego pago, DA alto...<br>
+      Tudo construído para um mundo onde o comprador ainda digitava em buscador.
+    </p>
+
+    <div class="progress-track"><div class="progress-fill" style="width:28%"></div></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SLIDE 3 — Ruptura com dado (fundo escuro)
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-3">
+  <div style="background:#1A1A1A;width:100%;height:100%;display:flex;
+              flex-direction:column;justify-content:center;padding:50px 24px 28px;">
+
+    <div class="hdr"><span>IA B2B</span><span>UNIDCOM</span><span>ESTRATÉGIA</span></div>
+
+    <p class="tag-italic">Mas ninguém te contou que:</p>
+    <h2 class="t-white" style="font-size:42px;">
+      51% DOS<br>COMPRADORES<br>B2B JÁ<br>COMEÇAM<br>PELA IA.
+    </h2>
+    <p class="body-w">
+      Não pelo Google. Pela IA.<br>
+      Chatbots são a fonte <strong style="color:#FF7C1A;">#1</strong> que monta shortlists —<br>
+      acima de sites de review e do seu próprio site.
+    </p>
+
+    <div class="progress-track"><div class="progress-fill" style="width:43%"></div></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SLIDE 4 — Dado de impacto (fundo laranja)
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-4">
+  <div style="background:#FF7C1A;width:100%;height:100%;display:flex;
+              flex-direction:column;justify-content:center;padding:50px 24px 28px;">
+
+    <div class="hdr on-orange"><span>IA B2B</span><span>UNIDCOM</span><span>ESTRATÉGIA</span></div>
+
+    <div class="arr inv"><span>&#8594;</span></div>
+
+    <h2 class="t-dark" style="font-size:46px;">
+      69%<br>MUDARAM<br>O FORNECEDOR<br>POR CAUSA<br>DA IA.
+    </h2>
+    <p class="body-d">
+      Sem visita ao site. Sem reunião com vendedor.<br>
+      Sem <strong>um único clique</strong> rastreável no seu CRM.<br><br>
+      A decisão aconteceu antes de você existir.
+    </p>
+
+    <div class="progress-track">
+      <div class="progress-fill dark" style="width:57%"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SLIDE 5 — O que a IA avalia (fundo escuro)
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-5">
+  <div style="background:#1A1A1A;width:100%;height:100%;display:flex;
+              flex-direction:column;justify-content:center;padding:50px 24px 28px;">
+
+    <div class="hdr"><span>IA B2B</span><span>UNIDCOM</span><span>ESTRATÉGIA</span></div>
+
+    <p class="tag-italic">O que a IA usa para te recomendar:</p>
+    <h2 class="t-white" style="font-size:38px;">
+      CLAREZA<br>DE MENSAGEM.<br>REVIEWS.<br>VALIDAÇÃO<br>EXTERNA.
+    </h2>
+    <p class="body-w">
+      Não é tráfego. Não é backlink.<br>
+      É ser <strong style="color:#FF7C1A;">claramente compreendido</strong><br>
+      onde a IA busca informação.
+    </p>
+
+    <div class="progress-track"><div class="progress-fill" style="width:71%"></div></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SLIDE 6 — Foto topo + laranja embaixo
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-6">
+  <div style="width:100%;height:100%;display:flex;flex-direction:column;position:relative;">
+
+    <div class="hdr" style="z-index:5;"><span>IA B2B</span><span>UNIDCOM</span><span>ESTRATÉGIA</span></div>
+
+    <!-- Foto topo 55% -->
+    <div style="flex:0 0 55%;overflow:hidden;position:relative;">
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=840&q=80"
+           alt="equipe estratégia"
+           style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.05) 100%);"></div>
+    </div>
+
+    <!-- Laranja embaixo 45% -->
+    <div style="flex:0 0 45%;background:#FF7C1A;padding:16px 24px 28px;
+                display:flex;flex-direction:column;justify-content:center;">
+      <h2 class="t-dark" style="font-size:26px;letter-spacing:-0.3px;">
+        COMO SER<br>RECOMENDADO<br>PELA IA:
+      </h2>
+      <p class="body-d" style="font-size:12px;margin-top:8px;line-height:1.7;">
+        ✅ Revise seu posicionamento de categoria<br>
+        ✅ Acumule reviews em plataformas públicas<br>
+        ✅ Crie conteúdo que IA possa citar<br>
+        ✅ Apareça onde a IA aprende
+      </p>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill dark" style="width:86%"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SLIDE 7 — CTA final (fundo laranja)
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-7">
+  <div style="background:#1A1A1A;width:100%;height:100%;display:flex;
+              flex-direction:column;align-items:center;justify-content:center;
+              padding:32px 28px;text-align:center;position:relative;">
+
+    <img src="https://unidcom.com.br/wp-content/uploads/2024/02/logo-white.png"
+         style="height:22px;width:auto;margin-bottom:22px;" alt="unidcom">
+
+    <h2 class="t-white" style="font-size:28px;line-height:1.15;margin-bottom:14px;">
+      SEU MARKETING<br>ESTÁ PRONTO<br>PARA O MUNDO<br>ONDE A IA<br>DECIDE?
+    </h2>
+
+    <p style="font-weight:700;font-size:13px;color:#999;line-height:1.5;margin-bottom:22px;">
+      A Unidcom constrói estratégias<br>para o novo cenário B2B.
+    </p>
+
+    <!-- Instagram icons -->
+    <div style="display:flex;gap:18px;align-items:center;justify-content:center;
+                margin-bottom:12px;">
+      <!-- Salvar -->
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF7C1A" stroke-width="1.8">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>
+      <!-- Comentário -->
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF7C1A" stroke-width="1.8">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <!-- Enviar -->
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF7C1A" stroke-width="1.8">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+      <!-- Repost -->
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF7C1A" stroke-width="1.8">
+        <polyline points="17 1 21 5 17 9"/>
+        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+        <polyline points="7 23 3 19 7 15"/>
+        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+      </svg>
+    </div>
+
+    <p style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:9px;
+              text-transform:uppercase;letter-spacing:1.5px;color:#555;">
+      SALVE · COMPARTILHE · COMENTE
+    </p>
+
+    <div class="progress-track">
+      <div class="progress-fill" style="width:100%;"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════ NAVEGAÇÃO ══════ -->
+<div class="nav">
+  <button onclick="prevSlide()">&#8592; ANTERIOR</button>
+  <span id="counter">1 / 7</span>
+  <button onclick="nextSlide()">PRÓXIMO &#8594;</button>
+  <button class="btn-export" id="btnExport" onclick="exportAllSlides()">⬇ EXPORTAR PNG</button>
+</div>
+<span class="export-progress" id="exportProgress"></span>
+
+<script>
+  let cur = 0;
+  const N = 7;
+
+  function showSlide(i) {
+    document.querySelectorAll('.slide').forEach((s, idx) => {
+      s.style.display = idx === i ? 'flex' : 'none';
+    });
+    document.getElementById('counter').textContent = `${i + 1} / ${N}`;
+    cur = i;
+  }
+
+  function nextSlide() { if (cur < N - 1) showSlide(cur + 1); }
+  function prevSlide() { if (cur > 0) showSlide(cur - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  async function exportAllSlides() {
+    const btn = document.getElementById('btnExport');
+    const progress = document.getElementById('exportProgress');
+    btn.disabled = true;
+    progress.style.display = 'inline-block';
+
+    const SCALE = 1080 / 420;
+
+    for (let i = 0; i < N; i++) {
+      showSlide(i);
+      progress.textContent = `Exportando ${i + 1} / ${N}...`;
+      await new Promise(r => setTimeout(r, 600));
+
+      const slide = document.getElementById(`slide-${i + 1}`);
+      const canvas = await html2canvas(slide, {
+        scale: SCALE,
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: null,
+        width: 420,
+        height: 525,
+        logging: false
+      });
+
+      const link = document.createElement('a');
+      link.download = `slide_${String(i + 1).padStart(2, '0')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      await new Promise(r => setTimeout(r, 400));
+    }
+
+    progress.textContent = '✅ Exportação concluída!';
+    setTimeout(() => {
+      progress.style.display = 'none';
+      btn.disabled = false;
+    }, 3000);
+    showSlide(0);
+  }
+
+  showSlide(0);
+</script>
+</body>
+</html>
