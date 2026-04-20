@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=420, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Agentes de IA — Unidcom</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#111; display:flex; flex-direction:column; align-items:center; padding:20px; font-family:'Montserrat',sans-serif; }
+    .carousel { width:420px; }
+    .slide { width:420px; height:525px; position:relative; overflow:hidden; display:none; }
+    .slide.active { display:flex; flex-direction:column; }
+    .progress-bar { position:absolute; bottom:0; left:0; height:3px; background:#FF7C1A; z-index:10; }
+    .progress-track { position:absolute; bottom:0; left:0; right:0; height:3px; background:rgba(255,255,255,0.15); z-index:9; }
+    .slide-header { position:absolute; top:14px; left:20px; right:20px; display:flex; justify-content:space-between; align-items:center; font-size:9px; font-weight:400; letter-spacing:1.5px; text-transform:uppercase; z-index:5; }
+    .nav-container { width:420px; display:flex; justify-content:center; align-items:center; gap:8px; padding:12px 0; }
+    .nav-dot { width:6px; height:6px; border-radius:50%; background:#444; cursor:pointer; transition:background 0.2s; }
+    .nav-dot.active { background:#FF7C1A; }
+    .nav-btn { background:#FF7C1A; color:#fff; border:none; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .slide-dark { background:#1a1a1a; padding:44px 24px 28px; flex-direction:column; justify-content:center; }
+    .slide-orange { background:#FF7C1A; padding:44px 24px 28px; flex-direction:column; justify-content:center; }
+    .tag-intro { font-size:13px; font-weight:700; font-style:italic; color:#FF7C1A; line-height:1.3; margin-bottom:10px; }
+    .title-impact { font-size:48px; font-weight:900; text-transform:uppercase; color:#fff; line-height:1.0; margin-bottom:12px; letter-spacing:-0.5px; }
+    .body-text { font-size:14px; font-weight:600; color:#fff; line-height:1.5; }
+    .divider { width:40px; height:2px; background:#FF7C1A; margin:12px 0; }
+    .list-item { display:flex; align-items:flex-start; gap:8px; margin-bottom:10px; }
+    .arrow-circle { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  </style>
+</head>
+<body>
+
+<div style="text-align:center;margin:16px 0;font-family:sans-serif;">
+  <button id="btnExport" onclick="exportAllSlides()" style="background:#FF7C1A;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;">
+    &#11015; EXPORTAR PNG
+  </button>
+  <span id="exportProgress" style="display:none;margin-left:12px;font-size:13px;color:#ccc;"></span>
+</div>
+
+<div class="carousel">
+
+  <!-- SLIDE 1 - CAPA -->
+  <div class="slide active" id="slide-1">
+    <div style="position:absolute;inset:0;background-image:url(https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=840&q=80);background-size:cover;background-position:center;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.65) 50%,rgba(0,0,0,0.95) 100%);"></div>
+    <div style="position:absolute;top:18px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;z-index:10;">
+      <img src="data:image/png;base64,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" style="height:20px;width:auto;" alt="unidcom">
+      <span style="font-size:9px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.6);">UNIDCOM</span>
+    </div>
+    <div style="position:relative;z-index:5;display:flex;flex-direction:column;justify-content:flex-end;padding:28px 24px;height:100%;">
+      <p style="font-size:13px;font-weight:700;font-style:italic;color:#FF7C1A;margin-bottom:8px;">A IA n&#227;o tem emo&#231;&#245;es.</p>
+      <h1 style="font-size:42px;font-weight:900;text-transform:uppercase;color:#fff;line-height:1.0;margin-bottom:4px;letter-spacing:-0.5px;">SEU CLIENTE<br>N&#195;O COMPRA MAIS.</h1>
+      <h1 style="font-size:42px;font-weight:900;text-transform:uppercase;color:#FF7C1A;line-height:1.0;margin-bottom:14px;letter-spacing:-0.5px;">A IA COMPRA<br>POR ELE.</h1>
+      <p style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);margin-bottom:20px;">E isso muda tudo no seu marketing.</p>
+      <div><span style="background:#FF7C1A;color:#fff;font-family:Montserrat,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;padding:9px 16px;border-radius:20px;display:inline-flex;align-items:center;gap:6px;">ENTENDA MELHOR &#8594;</span></div>
+    </div>
+    <div class="progress-track"></div>
+    <div class="progress-bar" style="width:14.3%"></div>
+  </div>
+
+  <!-- SLIDE 2 - CRENÇA GERAL -->
+  <div class="slide slide-dark" id="slide-2">
+    <div class="slide-header" style="color:#999;"><span>AGENTES DE IA</span><span>UNIDCOM</span><span>MARKETING</span></div>
+    <p class="tag-intro">A cren&#231;a que todo gestor tem:</p>
+    <h2 class="title-impact" style="font-size:42px;">&#8220;BRANDING<br>EMOCIONAL<br>VENCE O JOGO.&#8221;</h2>
+    <div class="divider"></div>
+    <p class="body-text" style="font-size:14px;line-height:1.6;">Construir conex&#227;o com o consumidor, gerar prefer&#234;ncia e ganhar share of mind.<br><br>Essa &#233; a f&#243;rmula. Sempre foi.</p>
+    <div class="progress-track"></div>
+    <div class="progress-bar" style="width:28.6%"></div>
+  </div>
+
+  <!-- SLIDE 3 - CONTRADIÇÃO -->
+  <div class="slide slide-orange" id="slide-3">
+    <div class="slide-header" style="color:rgba(0,0,0,0.45);"><span>AGENTES DE IA</span><span>UNIDCOM</span><span>MARKETING</span></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div class="arrow-circle" style="background:#1a1a1a;"><span style="color:#fff;font-size:14px;font-weight:700;">&#8594;</span></div>
+      <p style="font-size:13px;font-weight:700;font-style:italic;color:#1a1a1a;">Mas ningu&#233;m te conta o que mudou.</p>
+    </div>
+    <h2 style="font-size:38px;font-weight:900;text-transform:uppercase;color:#1a1a1a;line-height:1.0;margin-bottom:12px;">OS AGENTES<br>DE IA N&#195;O<br>SENTEM NADA<br>PELA SUA MARCA.</h2>
+    <div style="width:40px;height:2px;background:#1a1a1a;margin:12px 0;"></div>
+    <p style="font-size:14px;font-weight:600;color:#1a1a1a;line-height:1.5;">Eles t&#234;m <strong>par&#226;metros, n&#227;o emo&#231;&#245;es</strong>. E j&#225; est&#227;o decidindo o que comprar no lugar dos seus clientes.</p>
+    <div class="progress-track"></div>
+    <div class="progress-bar" style="width:42.9%;background:rgba(0,0,0,0.25)"></div>
+  </div>
+
+  <!-- SLIDE 4 - DADOS -->
+  <div class="slide slide-dark" id="slide-4">
+    <div class="slide-header" style="color:#999;"><span>AGENTES DE IA</span><span>UNIDCOM</span><span>MARKETING</span></div>
+    <p class="tag-intro">&#128202; O dado que incomoda:</p>
+    <div style="font-size:48px;font-weight:900;color:#FF7C1A;text-transform:uppercase;line-height:1.0;margin-bottom:8px;">US$ 3&#8211;5 TRI</div>
+    <p style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:14px;">em compras intermediadas por IA at&#233; 2030 &mdash; McKinsey</p>
+    <div class="divider"></div>
+    <p style="font-size:13px;font-weight:600;color:#fff;line-height:1.6;">A Salesforce j&#225; viu: tr&#225;fego de chatbots <span style="color:#FF7C1A;font-weight:700;">dobrou em 1 ano</span>.<br>IA causou <span style="color:#FF7C1A;font-weight:700;">20% das vendas do varejo global</span>.<br><br>O agente compra. Voc&#234; deixa de vender para gente.</p>
+    <div class="progress-track"></div>
+    <div class="progress-bar" style="width:57.1%"></div>
+  </div>
+
+  <!-- SLIDE 5 - DIAGNÓSTICO -->
+  <div class="slide slide-dark" id="slide-5">
+    <div class="slide-header" style="color:#999;"><span>AGENTES DE IA</span><span>UNIDCOM</span><span>MARKETING</span></div>
+    <p class="tag-intro">&#9888;&#65039; O que acontece com marcas invis&#237;veis:</p>
+    <h2 class="title-impact" style="font-size:40px;">O AGENTE<br>IGNORA SUA<br>MARCA.<br>COMPLETAMENTE.</h2>
+    <div class="divider"></div>
+    <p style="font-size:13px;font-weight:600;color:#fff;line-height:1.6;">Cat&#225;logo incompleto + metadados inconsistentes = <span style="color:#FF7C1A;font-weight:700;">marca invis&#237;vel para as m&#225;quinas</span>.<br><br>N&#227;o importa quantas pessoas te amem.</p>
+    <div class="progress-track"></div>
+    <div class="progress-bar" style="width:71.4%"></div>
+  </div>
+
+  <!-- SLIDE 6 - O QUE FAZER -->
+  <div class="slide slide-orange" id="slide-6">
+    <div class="slide-header" style="color:rgba(0,0,0,0.45);"><span>AGENTES DE IA</span><span>UNIDCOM</span><span>MARKETING</span></div>
+    <h2 style="font-size:34px;font-weight:900;text-transform:uppercase;color:#1a1a1a;line-height:1.0;margin-bottom:10px;">O QUE MUDA NA SUA ESTRAT&#201;GIA AGORA.</h2>
+    <div style="width:40px;height:2px;background:#1a1a1a;margin-bottom:14px;"></div>
+    <div class="list-item"><span style="font-size:16px;">&#9989;</span><p style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4;"><strong>Estruture dados de produto</strong> para leitura por m&#225;quinas &mdash; cat&#225;logo limpo, metadados precisos.</p></div>
+    <div class="list-item"><span style="font-size:16px;">&#9989;</span><p style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4;"><strong>Construa ativos emocionais</strong> que o consumidor configure como prefer&#234;ncia padr&#227;o no agente.</p></div>
+    <div class="list-item"><span style="font-size:16px;">&#9989;</span><p style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.4;"><strong>Revise sua distribui&#231;&#227;o algor&#237;tmica</strong> &mdash; presen&#231;a nos canais onde os agentes buscam.</p></div>
+    <div style="align-self:flex-start;line-height:0;margin-top:8px;"><img src="data:image/png;base64,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" style="height:18px;display:block;filter:brightness(0);"></div>
+    <div class="progress-track"></div>
+    <div class="progress-bar" style="width:85.7%;background:rgba(0,0,0,0.25)"></div>
+  </div>
+
+  <!-- SLIDE 7 - CTA -->
+  <div class="slide" id="slide-7" style="background:#1a1a1a;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px;position:relative;">
+    <img src="data:image/png;base64,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" style="height:26px;width:auto;filter:brightness(0) invert(1);margin-bottom:20px;" alt="unidcom">
+    <h2 style="font-size:32px;font-weight:900;text-transform:uppercase;color:#fff;line-height:1.1;margin-bottom:8px;">MARKETING QUE S&#211;<br>FALA COM HUMANOS<br><span style="color:#FF7C1A;">VAI PERDER.</span></h2>
+    <p style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:16px;">Para quem tamb&#233;m fala com m&#225;quinas.</p>
+    <div style="width:40px;height:2px;background:#FF7C1A;margin:0 auto 16px;"></div>
+    <div style="display:flex;gap:16px;align-items:center;color:#FF7C1A;margin-bottom:14px;">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <p style="font-size:9px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:#666;">SALVE &middot; COMPARTILHE &middot; COMENTE</p>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.15);"></div>
+    <div style="position:absolute;bottom:0;left:0;height:3px;background:#FF7C1A;width:100%;"></div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-container">
+  <button class="nav-btn" onclick="prevSlide()">&#8592;</button>
+  <div id="dots-container" style="display:flex;gap:8px;align-items:center;">
+    <div class="nav-dot active" onclick="showSlide(0)"></div>
+    <div class="nav-dot" onclick="showSlide(1)"></div>
+    <div class="nav-dot" onclick="showSlide(2)"></div>
+    <div class="nav-dot" onclick="showSlide(3)"></div>
+    <div class="nav-dot" onclick="showSlide(4)"></div>
+    <div class="nav-dot" onclick="showSlide(5)"></div>
+    <div class="nav-dot" onclick="showSlide(6)"></div>
+  </div>
+  <button class="nav-btn" onclick="nextSlide()">&#8594;</button>
+</div>
+
+<script>
+  const N = 7;
+  let current = 0;
+  function showSlide(idx) {
+    document.querySelectorAll('.slide').forEach(function(s) { s.classList.remove('active'); s.style.display = 'none'; });
+    document.querySelectorAll('.nav-dot').forEach(function(d) { d.classList.remove('active'); });
+    var sl = document.getElementById('slide-' + (idx + 1));
+    sl.classList.add('active');
+    sl.style.display = 'flex';
+    document.querySelectorAll('.nav-dot')[idx].classList.add('active');
+    current = idx;
+  }
+  function nextSlide() { showSlide((current + 1) % N); }
+  function prevSlide() { showSlide((current - 1 + N) % N); }
+  async function exportAllSlides() {
+    const btn = document.getElementById('btnExport');
+    const progress = document.getElementById('exportProgress');
+    btn.disabled = true;
+    progress.style.display = 'inline-block';
+    const SCALE = 1080 / 420;
+    for (let i = 0; i < N; i++) {
+      showSlide(i);
+      progress.textContent = 'Exportando ' + (i + 1) + ' / ' + N + '...';
+      await new Promise(function(r) { setTimeout(r, 600); });
+      const slide = document.getElementById('slide-' + (i + 1));
+      const canvas = await html2canvas(slide, { scale: SCALE, useCORS: true, allowTaint: false, backgroundColor: null, width: 420, height: 525, logging: false });
+      const link = document.createElement('a');
+      link.download = 'slide_' + String(i + 1).padStart(2, '0') + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      await new Promise(function(r) { setTimeout(r, 400); });
+    }
+    progress.textContent = '&#10003; Exportacao concluida!';
+    setTimeout(function() { progress.style.display = 'none'; btn.disabled = false; }, 3000);
+    showSlide(0);
+  }
+  // init
+  document.querySelectorAll('.slide').forEach(function(s, i) { if(i > 0) s.style.display = 'none'; });
+</script>
+</body>
+</html>
