@@ -234,13 +234,13 @@ async function exportAll() {
     const canvas = await html2canvas(el, {
       scale: SCALE, useCORS: true, allowTaint: false,
       backgroundColor: null, width: 420, height: 525, logging: false,
-      onclone: function(clonedDoc, clonedEl) {
-        // Redesenha canvases de foto em resolucao de exportacao (1080x1350)
-        // para que html2canvas copie pixels 1:1 sem escalar — imagem nítida
+      onclone: function(clonedDoc) {
+        // html2canvas 1.4.1 passa so clonedDoc — usar getElementById no doc clonado
+        // Redesenha foto em 1080x1350 para copia 1:1 sem upscale
         [['bg-s1','img-s1'],['bg-s4','img-s4']].forEach(function(pair) {
-          const cvs = clonedEl.querySelector('#' + pair[0]);
+          const cvs = clonedDoc.getElementById(pair[0]);
           if (!cvs) return;
-          const img = document.getElementById(pair[1]);
+          const img = document.getElementById(pair[1]); // doc original — ja carregado
           if (!img || !img.naturalWidth) return;
           const W = 1080, H = 1350;
           cvs.width = W; cvs.height = H;
