@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #111; display: flex; flex-direction: column; align-items: center;
@@ -247,13 +248,19 @@
 </div>
 
 <!-- Export button -->
-<div style="text-align:center;margin:16px 0;font-family:sans-serif;">
+<div style="text-align:center;margin:16px 0;font-family:sans-serif;display:flex;gap:10px;justify-content:center;align-items:center;">
   <button id="btnExport" onclick="exportAllSlides()"
     style="background:#0A6DBF;color:#fff;border:none;padding:10px 24px;
            border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;">
     ⬇ EXPORTAR PNG
   </button>
   <span id="exportProgress" style="display:none;margin-left:12px;font-size:13px;color:#aaa;"></span>
+  <button id="btnPdf" onclick="exportPDF()"
+    style="background:#1a1a1a;color:#fff;border:2px solid #0A6DBF;padding:10px 24px;
+           border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;">
+    ⬇ EXPORTAR PDF
+  </button>
+  <span id="pdfProgress" style="display:none;font-size:13px;color:#aaa;"></span>
 </div>
 
 <script>
@@ -296,6 +303,37 @@ async function exportAllSlides() {
   showSlide(0);
 }
 
+
+async function exportPDF() {
+  const btn = document.getElementById('btnPdf');
+  const progress = document.getElementById('pdfProgress');
+  btn.disabled = true;
+  progress.style.display = 'inline-block';
+
+  const { jsPDF } = window.jspdf;
+  const W = 420, H = 525;
+  const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [W, H], hotfixes: ['px_scaling'] });
+
+  for (let i = 0; i < 7; i++) {
+    showSlide(i);
+    progress.textContent = 'Gerando página ' + (i + 1) + ' / 7...';
+    await new Promise(r => setTimeout(r, 600));
+
+    const slide = document.getElementById('slide-' + (i + 1));
+    const canvas = await html2canvas(slide, {
+      scale: 2, useCORS: true, allowTaint: false,
+      backgroundColor: null, width: W, height: H, logging: false
+    });
+
+    if (i > 0) pdf.addPage([W, H]);
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, W, H);
+  }
+
+  pdf.save('carrossel-google-ia-search-console.pdf');
+  progress.textContent = '✅ PDF baixado!';
+  setTimeout(() => { progress.style.display = 'none'; btn.disabled = false; }, 3000);
+  showSlide(0);
+}
 </script>
 </body>
 </html>
